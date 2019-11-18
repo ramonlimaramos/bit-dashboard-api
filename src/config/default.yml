@@ -1,0 +1,8 @@
+Mongo:
+  user: "user1"
+  pwd: "p@Ss1"
+  uri: "mongodb://%s:%s@127.0.0.1:27017/bit-db"
+  port: 27017
+  msg:
+    bulkupdated:
+      result: "Records were upserted with success result"
