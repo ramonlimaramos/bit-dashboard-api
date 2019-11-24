@@ -29,32 +29,40 @@ export class AsyncHandler {
     }
 }
 
+
 export const hasSpecialChar = () => /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
+
 export const stringToCurr = (val) => {
+
     if (hasSpecialChar().test(val)) {
-        let currVal = val.replace('.', '').replace(',', '.');
-        return parseFloat(currVal);
+
+        let withOutDot = val.replace(/\./g, '')
+        let changeDotToVirg = withOutDot.replace(/\,/g, '.');
+        return parseFloat(changeDotToVirg);
     }
-    return parseInt(val);
+
+    return parseFloat(val);
 }
 
 export const stringToCurrFromReal = (val, curr) => {
+
     const toCurVal = (val) => {
+
         let curVal = 1 / val;
-        if(curr == "arg") {
-            console.log(currVal);
-            console.log(parseFloat(1 / curVal).toFixed(4));
-            return parseFloat(1 / curVal).toFixed(4);
-        } else if(curr == "col") {
-            console.log(currVal);
-            console.log(parseFloat(1 / curVal).toFixed(5));
-            return parseFloat(1 / curVal).toFixed(5);
-        }
+
+        if(curr == "arg")
+            return parseFloat(curVal).toFixed(4);
+
+        else if(curr == "col")
+            return parseFloat(curVal).toFixed(5);
     }
 
     if (hasSpecialChar().test(val)) {
-        let currVal = val.replace('.', '').replace(',', '.');
-        return toCurVal(currVal);
+
+        let withOutDot = val.replace(/\./g, '')
+        let changeDotToVirg = withOutDot.replace(/\,/g, '.');
+        return toCurVal(changeDotToVirg);
     }
     
     return toCurVal(val);
@@ -96,22 +104,23 @@ export class ConvertToRealBtc {
                 getConversionValue()
                     .then(value => {
 
+                        let currencyForMultiplication = (curr == "arg" || curr == "col") ? 
+                            stringToCurrFromReal(value[keyName], curr) : 
+                            stringToCurr(value[keyName]);
+
+                        let btcForMultiplication = stringToCurr(btcValue);
+
                         let convertionMult = 
-                            (stringToCurr(btcValue) * 
-                            (curr == "arg" || curr == "col") ? 
-                                stringToCurrFromReal(value[keyName]) : 
-                                stringToCurr(value[keyName]))
+                            (btcForMultiplication * currencyForMultiplication);
 
                         result["convertedReal"] =
-                            moneyCurrency(convertionMult, {
-                                decimal: ',',
-                                separator: '.',
-                                // precision: 3
-                            }).format();
-                        result["currencyToReal"] = value[keyName]
+                            moneyCurrency(convertionMult, { decimal: ',', separator: '.'}).format();
+
+                        result["currencyToReal"] = currencyForMultiplication;
 
                         resolve(result);
                     });
+                    
             } else {
 
                 resolve({});
