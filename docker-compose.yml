@@ -7,8 +7,8 @@ services:
     container_name: 'bit-mongo'
     environment: 
       - MONGO_INITDB_DATABASE=bit-db
-      - MONGO_INITDB_ROOT_USERNAME=user1
-      - MONGO_INITDB_ROOT_PASSWORD=p@Ss1
+      - MONGO_INITDB_ROOT_USERNAME=[user]
+      - MONGO_INITDB_ROOT_PASSWORD=[pass]
     ports:
       - "27017:27017"
     networks:
