@@ -73,7 +73,7 @@ export class ConvertToRealBtc {
 
     static async call(btcValue, curr) {
 
-        const currExcpt = ["br", "brMarket", "usMarket"];
+        const currExcpt = ["br", "brMarket", "usMarket", "coinTrade"];
 
         if(currExcpt.includes(curr)) return Promise.resolve({});
 

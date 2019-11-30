@@ -9,7 +9,8 @@ import {
     BTCColombia,
     BTCArgentina,
     Brokerages,
-    BTCEuro
+    BTCEuro,
+    CoinTradeBTC
 } from "./workers";
 
 import {
@@ -185,6 +186,24 @@ const schedulers = {
         // });
     },
 
+    coinTrade: async () => {
+
+        // Schedule.scheduleJob(schedulers.everyOneMinute(), async () => {
+
+            console.log("running btc coin trade");
+
+            let btc = await new CoinTradeBTC().execute();
+            let coinTrade = {
+                value: btc.coinTrade,
+                time: nowTime()
+            };
+
+            schedulers.handleBTC(coinTrade, "coinTrade");
+
+            console.log("completed btc coin trade");
+        // });
+    },
+
     brokerages: async () => {
 
         // Schedule.scheduleJob(schedulers.everyOneMinute(), async () => {
@@ -219,6 +238,7 @@ const schedulers = {
                 await schedulers.btcArgentina(),
                 await schedulers.btcUsa(),
                 await schedulers.btcEur(),
+                await schedulers.coinTrade(),
                 await schedulers.brokerages()
             ]);
 

@@ -1,6 +1,7 @@
  import Middleware from "../job/middleware";
  //import cheerio from "cheerio";
 
+
  export class BTCBrazil extends Middleware {
 
      constructor() {
@@ -29,6 +30,7 @@
          return result;
      }
  }
+
 
  export class BTCUsa extends Middleware {
 
@@ -59,6 +61,7 @@
     }
 }
 
+
 export class BTCEuro extends Middleware {
 
     constructor() {
@@ -87,6 +90,7 @@ export class BTCEuro extends Middleware {
         return result;
     }
 }
+
 
  export class BTCArgentina extends Middleware {
 
@@ -206,6 +210,33 @@ export class BTCEuro extends Middleware {
      }
  }
 
+
+ export class CoinTradeBTC extends Middleware {
+
+    constructor() {
+
+        super();
+        super.__url = "https://www.cointradermonitor.com/preco-bitcoin-brasil";
+    }
+
+    async execute() {
+        await this.prepare();
+        let result = await this.__instance.evaluate(() => {
+
+            try {
+                
+                let coinTrade = document.getElementById("coin_price_display").innerText;
+                return { coinTrade };
+
+            } catch (error) {
+
+                console.error(error);
+            }
+        });
+        this.__simulator.close();
+        return result;
+    }
+}
 
 
  export class ArgToReal extends Middleware {
